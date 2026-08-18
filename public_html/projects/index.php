@@ -6,7 +6,7 @@ declare(strict_types=1);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mina projekt</title>
-  <link rel="stylesheet" href="assets/css/projects.css">
+  <link rel="stylesheet" href="assets/css/projects.css?v=3">
 </head>
 <body>
   <header class="site-header">
@@ -410,8 +410,31 @@ declare(strict_types=1);
           </div>
         </main>
       </div>
-      </div>
     </section>
+  </div>
+
+  <div
+    id="image-lightbox"
+    class="image-lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Förstorad bild"
+    hidden
+  >
+    <button
+      type="button"
+      id="image-lightbox-close"
+      class="image-lightbox-close"
+      aria-label="Stäng bild"
+      title="Stäng"
+    >
+      ×
+    </button>
+
+    <figure class="image-lightbox-content">
+      <img id="image-lightbox-image" src="" alt="">
+      <figcaption id="image-lightbox-caption" hidden></figcaption>
+    </figure>
   </div>
 
   <template id="project-card-template">
@@ -431,7 +454,7 @@ declare(strict_types=1);
     </article>
   </template>
 
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/projects.js?=v2"></script>
+  <script src="assets/js/auth.js?v=3"></script>
+  <script src="assets/js/projects.js?v=3"></script>
 </body>
 </html>

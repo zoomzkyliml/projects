@@ -530,9 +530,15 @@
             .map((image) => `
               <figure>
                 <img
+                  class="project-detail-post-image"
                   src="${escapeHtml(image.file_path)}"
                   alt="${escapeHtml(image.alt_text || image.caption || "")}"
+                  data-lightbox-src="${escapeHtml(image.file_path)}"
+                  data-lightbox-caption="${escapeHtml(image.caption || "")}"
                   loading="lazy"
+                  tabindex="0"
+                  role="button"
+                  aria-label="Visa bilden i helskärm"
                 >
                 ${image.caption
                   ? `<figcaption>${escapeHtml(image.caption)}</figcaption>`
@@ -585,6 +591,36 @@
     }
 
     postsContainer.innerHTML = rendered.join("");
+  }
+
+  function openImageLightbox(imageSrc, imageAlt = "", caption = "") {
+    const lightbox = document.getElementById("image-lightbox");
+    const image = document.getElementById("image-lightbox-image");
+    const captionElement =
+      document.getElementById("image-lightbox-caption");
+
+    image.src = imageSrc;
+    image.alt = imageAlt || caption || "Förstorad bild";
+
+    captionElement.textContent = caption;
+    captionElement.hidden = !caption;
+
+    lightbox.hidden = false;
+    document.body.classList.add("image-lightbox-open");
+  }
+
+  function closeImageLightbox() {
+    const lightbox = document.getElementById("image-lightbox");
+    const image = document.getElementById("image-lightbox-image");
+    const caption = document.getElementById("image-lightbox-caption");
+
+    lightbox.hidden = true;
+    image.src = "";
+    image.alt = "";
+    caption.textContent = "";
+    caption.hidden = true;
+
+    document.body.classList.remove("image-lightbox-open");
   }
 
   async function openProjectDetail(projectId) {
@@ -833,6 +869,57 @@
       document.getElementById("project-detail-info-button");
     const detailBackButton =
       document.getElementById("project-detail-back-button");
+    const detailPosts =
+      document.getElementById("project-detail-posts");
+    const imageLightbox =
+      document.getElementById("image-lightbox");
+    const imageLightboxClose =
+      document.getElementById("image-lightbox-close");
+
+    detailPosts.addEventListener("click", (event) => {
+      const image = event.target.closest(".project-detail-post-image");
+
+      if (!image) {
+        return;
+      }
+
+      openImageLightbox(
+        image.dataset.lightboxSrc || image.src,
+        image.alt || "",
+        image.dataset.lightboxCaption || "",
+      );
+    });
+
+    detailPosts.addEventListener("keydown", (event) => {
+      if (
+        event.key !== "Enter"
+        && event.key !== " "
+      ) {
+        return;
+      }
+
+      const image = event.target.closest(".project-detail-post-image");
+
+      if (!image) {
+        return;
+      }
+
+      event.preventDefault();
+
+      openImageLightbox(
+        image.dataset.lightboxSrc || image.src,
+        image.alt || "",
+        image.dataset.lightboxCaption || "",
+      );
+    });
+
+    imageLightboxClose.addEventListener("click", closeImageLightbox);
+
+    imageLightbox.addEventListener("click", (event) => {
+      if (event.target === imageLightbox) {
+        closeImageLightbox();
+      }
+    });
 
     detailClose.addEventListener("click", closeProjectDetailModal);
 
@@ -853,10 +940,16 @@
     });
 
     document.addEventListener("keydown", (event) => {
-      if (
-        event.key === "Escape"
-        && !detailBackdrop.hidden
-      ) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (!imageLightbox.hidden) {
+        closeImageLightbox();
+        return;
+      }
+
+      if (!detailBackdrop.hidden) {
         closeProjectDetailModal();
       }
     });
