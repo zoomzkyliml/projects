@@ -1,0 +1,26 @@
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+
+# User uploads
+public_html/Projects/uploads/
+
+# Secrets
+secure/
+
+# Apache
+.htaccess
+
+# misc
+*.zip
+
+*.sql
