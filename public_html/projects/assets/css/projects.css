@@ -27,14 +27,18 @@ button, input, textarea, select { font: inherit; }
 [hidden] { display: none !important; }
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   gap: 2rem;
   padding: 3.5rem max(1.5rem, calc((100vw - 1180px) / 2));
   color: #fff;
   background:
-    linear-gradient(120deg, rgba(28, 55, 40, .96), rgba(49, 93, 69, .90)),
+    linear-gradient(120deg, rgba(28, 55, 40, .98), rgba(49, 93, 69, .96)),
     radial-gradient(circle at top right, #6e8d78, transparent 48%);
+  box-shadow: 0 3px 16px rgba(18, 28, 22, .18);
 }
 
 .site-header h1 {
@@ -1222,7 +1226,8 @@ body.project-detail-open {
   }
 
   .site-header {
-    position: relative;
+    position: sticky;
+    top: 0;
   }
 
   .auth-panel {
@@ -1254,4 +1259,12 @@ body.project-detail-open {
   .project-detail-info-grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* Fast sidhuvud: lämna luft vid programmatisk scrollning */
+.admin-toolbar,
+.admin-card,
+.page-shell > section {
+  scroll-margin-top: 1rem;
 }
