@@ -1304,7 +1304,7 @@ if ($action === 'PROJECT_POST_IMAGE_UPLOAD') {
 
     $targetDirectory =
         dirname(__DIR__)
-        . '/Projects/uploads/projects/'
+        . '/projects/uploads/projects/'
         . $projectId
         . '/posts/'
         . $postId;
@@ -1615,7 +1615,7 @@ if ($action === 'PROJECT_COVER_UPLOAD') {
      */
     $targetDirectory =
         dirname(__DIR__)
-        . '/Projects/uploads/projects/'
+        . '/projects/uploads/projects/'
         . $id;
 
     if (
