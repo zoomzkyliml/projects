@@ -1,0 +1,58 @@
+name: Deploy to prod (SFTP)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "public_html/projects/**"
+      - "public_html/php/projects_*.php"
+      - "!public_html/projects/uploads/**"
+
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy Projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Write deploy marker
+        shell: bash
+        run: |
+          date -u +"Deployed %Y-%m-%d %H:%M:%S UTC" \
+            > public_html/projects/deploy.txt
+
+          echo "Deploy marker:"
+          cat public_html/projects/deploy.txt
+
+      - name: Deploy Forska via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_path: "public_html/projects/*"
+          remote_path: "/home/liml/public_html/projects"
+          sftp_only: true
+          delete_remote_files: false
+
+      - name: Deploy forska_service.php via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          port: ${{ secrets.SFTP_PORT }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_path: "public_html/php/projects_*.php"
+          remote_path: "/home/liml/public_html/php"
+          sftp_only: true
+          delete_remote_files: false
