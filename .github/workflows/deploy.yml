@@ -1,4 +1,4 @@
-name: Deploy to prod (SFTP)
+name: Deploy Projects to prod (SFTP)
 
 on:
   push:
