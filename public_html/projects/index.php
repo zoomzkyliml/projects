@@ -6,7 +6,7 @@ declare(strict_types=1);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mina projekt</title>
-  <link rel="stylesheet" href="assets/css/projects.css?v=3">
+  <link rel="stylesheet" href="assets/css/projects.css?v=4">
 </head>
 <body>
   <header class="site-header">
@@ -308,6 +308,17 @@ declare(strict_types=1);
       <div class="project-detail-header-actions">
         <button
           type="button"
+          id="project-detail-sort-button"
+          class="project-detail-sort-button"
+          aria-label="Visa nyaste inläggen först"
+          title="Visa nyaste inläggen först"
+          data-order="newest"
+        >
+          Nyaste först
+        </button>
+
+        <button
+          type="button"
           id="project-detail-info-button"
           class="project-detail-icon-button"
           aria-label="Visa projektinformation"
@@ -356,13 +367,6 @@ declare(strict_types=1);
           id="project-detail-log-view"
           class="project-detail-view project-detail-log-view"
         >
-          <div class="section-heading compact">
-            <div>
-              <p class="eyebrow">PROJEKTLOGG</p>
-              <h3>Senaste uppdateringarna</h3>
-            </div>
-          </div>
-
           <div id="project-detail-posts" class="project-detail-posts"></div>
         </main>
 
@@ -454,7 +458,7 @@ declare(strict_types=1);
     </article>
   </template>
 
-  <script src="assets/js/auth.js?v=3"></script>
-  <script src="assets/js/projects.js?v=3"></script>
+  <script src="assets/js/auth.js?v=4"></script>
+  <script src="assets/js/projects.js?v=4"></script>
 </body>
 </html>

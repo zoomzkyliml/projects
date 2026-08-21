@@ -1363,3 +1363,38 @@ body.image-lightbox-open {
     border-radius: 4px;
   }
 }
+
+
+/* Bloggvisning: diskret sorteringsväxling i projektets header */
+.project-detail-sort-button {
+  min-height: 42px;
+  padding: .55rem .8rem;
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 999px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 6px 18px rgba(0,0,0,.14);
+  font-size: .78rem;
+  font-weight: 750;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.project-detail-sort-button:hover,
+.project-detail-sort-button:focus-visible {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.project-detail-log-view {
+  padding-top: clamp(18px, 3vw, 34px);
+}
+
+@media (max-width: 620px) {
+  .project-detail-sort-button {
+    min-height: 38px;
+    padding: .45rem .65rem;
+    font-size: .72rem;
+  }
+}

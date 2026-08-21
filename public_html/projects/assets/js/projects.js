@@ -25,6 +25,8 @@
   const state = {
     rows: [],
     selectedId: null,
+    publicPostOrder: "newest",
+    currentPublicProjectId: null,
   };
 
   async function api(action, payload = {}) {
@@ -566,6 +568,25 @@
     `;
   }
 
+  function updatePublicPostSortButton() {
+    const button =
+      document.getElementById("project-detail-sort-button");
+    const newestFirst = state.publicPostOrder === "newest";
+
+    button.textContent = newestFirst
+      ? "Nyaste först"
+      : "Äldsta först";
+
+    button.dataset.order = state.publicPostOrder;
+
+    const label = newestFirst
+      ? "Visa äldsta inläggen först"
+      : "Visa nyaste inläggen först";
+
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  }
+
   async function loadPublicPosts(projectId) {
     const postsContainer = document.getElementById("project-detail-posts");
     postsContainer.innerHTML =
@@ -575,7 +596,13 @@
       project_id: projectId,
     });
 
-    const rows = Array.isArray(data.rows) ? data.rows : [];
+    const rows = Array.isArray(data.rows)
+      ? [...data.rows]
+      : [];
+
+    if (state.publicPostOrder === "oldest") {
+      rows.reverse();
+    }
 
     if (!rows.length) {
       postsContainer.innerHTML =
@@ -626,6 +653,10 @@
   async function openProjectDetail(projectId) {
     const image = document.getElementById("project-detail-image");
     const posts = document.getElementById("project-detail-posts");
+
+    state.currentPublicProjectId = projectId;
+    state.publicPostOrder = "newest";
+    updatePublicPostSortButton();
 
     openProjectDetailModal();
 
@@ -865,6 +896,8 @@
     const postMessage = document.getElementById("post-message");
     const detailBackdrop = document.getElementById("project-detail-backdrop");
     const detailClose = document.getElementById("project-detail-close");
+    const detailSortButton =
+      document.getElementById("project-detail-sort-button");
     const detailInfoButton =
       document.getElementById("project-detail-info-button");
     const detailBackButton =
@@ -922,6 +955,19 @@
     });
 
     detailClose.addEventListener("click", closeProjectDetailModal);
+
+    detailSortButton.addEventListener("click", async () => {
+      state.publicPostOrder =
+        state.publicPostOrder === "newest"
+          ? "oldest"
+          : "newest";
+
+      updatePublicPostSortButton();
+
+      if (state.currentPublicProjectId) {
+        await loadPublicPosts(state.currentPublicProjectId);
+      }
+    });
 
     detailInfoButton.addEventListener("click", () => {
       const isInfo =
